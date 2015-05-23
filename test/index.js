@@ -1,7 +1,8 @@
 var
   fs = require('fs'),
-  Tokenizer = require('../'),
-  Token = require('../lib/token');
+  lexit = require('../'),
+  Tokenizer = lexit.Tokenizer,
+  Token = lexit.Token;
 
 (function main() {
   var
@@ -33,7 +34,7 @@ var
 }());
 
 /**
- * @return {Stream}
+ * @return {Stream.Readable}
  */
 function getInputStream() {
   var
@@ -48,7 +49,7 @@ function getInputStream() {
 }
 
 /**
- * @return {Stream}
+ * @return {Stream.Transform}
  */
 function getTokenizer(terminals, tokenFactory) {
   var tokenizer = new Tokenizer(terminals, tokenFactory);
