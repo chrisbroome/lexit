@@ -1,0 +1,70 @@
+var
+  fs = require('fs'),
+  Tokenizer = require('../'),
+  Token = require('../lib/token');
+
+(function main() {
+  var
+    terminals = {
+      '+': /^(\+)/,
+      '-': /^(\-)/,
+      '*': /^(\*)/,
+      '/': /^(\/)/,
+      '(': /^(\()/,
+      ')': /^(\))/,
+      '^': /^(\^)/,
+      '=': /^(=)/,
+      ';': /^(;)/,
+      nl: /^(\n)/,
+      ws: /^(\s+)/,
+      number: /^(-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?)/,
+      keyword: /^(var)/,
+      identifier: /^([a-zA-Z_][a-zA-Z_0-9]*)/
+    };
+
+  var tokenizer = getTokenizer(terminals, function(type, opts) {
+    return new Token(opts);
+  });
+
+  var input = getInputStream();
+
+  return input.pipe(tokenizer);
+
+}());
+
+/**
+ * @return {Stream}
+ */
+function getInputStream() {
+  var
+    filename = process.argv[2],
+    inputStream = filename ? fs.createReadStream(filename) : process.stdin;
+
+  inputStream.on('error', function(err) {
+    console.error('inputStream:error:', err);
+  });
+
+  return inputStream;
+}
+
+/**
+ * @return {Stream}
+ */
+function getTokenizer(terminals, tokenFactory) {
+  var tokenizer = new Tokenizer(terminals, tokenFactory);
+
+  tokenizer.on('error', function(err) {
+    console.error('tokenizer:error:', err);
+    process.exit(1);
+  });
+
+  tokenizer.on('data', function(token) {
+    if (token.type !== 'ws') console.log(token.toString());
+  });
+
+  tokenizer.on('end', function() {
+    console.log(tokenizer.toString());
+  });
+
+  return tokenizer;
+}

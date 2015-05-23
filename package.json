@@ -1,0 +1,26 @@
+{
+  "name": "lexit",
+  "version": "1.0.0",
+  "description": "A Streaming Lexer (Tokenizer)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test/index.js ./test/fixtures/sample.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisbroome/lexit.git"
+  },
+  "keywords": [
+    "lexer",
+    "transform",
+    "stream",
+    "tokenizer",
+    "token"
+  ],
+  "author": "Chris Broome <chrisbroome7@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrisbroome/lexit/issues"
+  },
+  "homepage": "https://github.com/chrisbroome/lexit#readme"
+}

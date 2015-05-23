@@ -1,0 +1,4 @@
+var d = sqrt(b^2 - 4*a*c);
+var twoA = 2 * a;
+var x1 = (-b + d) / twoA;
+var x2 = (-b - d) / twoA;
