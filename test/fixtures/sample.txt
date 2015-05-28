@@ -3,3 +3,5 @@ var twoA = 2 * a;
 var x1 = (-b + d) / twoA;
 var x2 = (-b - d) / twoA;
 var variableWithEmbeddedKeyword = 0;
+var blah = "stuff";
+var PI = 3.1415926535;
