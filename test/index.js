@@ -1,5 +1,6 @@
 var
   fs = require('fs'),
+  stream = require('stream'),
   lexit = require('../'),
   TerminalList = lexit.TerminalList,
   Tokenizer = lexit.Tokenizer,
@@ -22,15 +23,44 @@ var
       ['number', /^(-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?)/],
       ['keyword', /^(var)/],
       ['identifier', /^([a-zA-Z_][a-zA-Z_0-9]*)/]
-    ]);
+    ]),
+    whitespaceFilter = getWhitespaceFilter(),
+    tokenizer = getTokenizer(terminals),
+    input = getInputStream(),
+    outputTransform = getOutputTransformStream();
 
-  var tokenizer = getTokenizer(terminals);
-
-  var input = getInputStream();
-
-  return input.pipe(tokenizer);
+  return input.pipe(tokenizer)
+    .pipe(whitespaceFilter)
+    .pipe(outputTransform)
+    .pipe(process.stdout);
 
 }());
+
+function getWhitespaceFilter() {
+  var filter = stream.Transform({objectMode: true});
+  filter._transform = function(token, encoding, cb) {
+    if (token.type === 'nl' || token.type === 'ws') return cb();
+    this.push(token);
+    this.emit('token', token);
+    cb();
+  };
+  filter._flush = function(cb) {
+    cb();
+  };
+  return filter;
+}
+
+function getOutputTransformStream() {
+  var outputTransform = new stream.Transform({writableObjectMode: true});
+  outputTransform._transform = function(token, encoding, cb) {
+    this.push(token.toString() + '\n');
+    cb();
+  };
+  outputTransform._flush = function(cb) {
+    cb();
+  };
+  return outputTransform;
+}
 
 /**
  * @return {Stream.Readable}
@@ -58,11 +88,7 @@ function getTokenizer(terminals, tokenFactory) {
     process.exit(1);
   });
 
-  tokenizer.on('data', function(token) {
-    if (token.type !== 'ws') console.log(token.toString());
-  });
-
-  tokenizer.on('end', function() {
+  tokenizer.on('finish', function() {
     console.log(tokenizer.toString());
   });
 
