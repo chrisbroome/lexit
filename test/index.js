@@ -1,31 +1,30 @@
 var
   fs = require('fs'),
   lexit = require('../'),
+  TerminalList = lexit.TerminalList,
   Tokenizer = lexit.Tokenizer,
   Token = lexit.Token;
 
 (function main() {
   var
-    terminals = {
-      '+': /^(\+)/,
-      '-': /^(\-)/,
-      '*': /^(\*)/,
-      '/': /^(\/)/,
-      '(': /^(\()/,
-      ')': /^(\))/,
-      '^': /^(\^)/,
-      '=': /^(=)/,
-      ';': /^(;)/,
-      nl: /^(\n)/,
-      ws: /^(\s+)/,
-      number: /^(-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?)/,
-      keyword: /^(var)/,
-      identifier: /^([a-zA-Z_][a-zA-Z_0-9]*)/
-    };
+    terminals = new TerminalList([
+      ['+', /^(\+)/],
+      ['-', /^(\-)/],
+      ['*', /^(\*)/],
+      ['/', /^(\/)/],
+      ['(', /^(\()/],
+      [')', /^(\))/],
+      ['^', /^(\^)/],
+      ['=', /^(=)/],
+      [';', /^(;)/],
+      ['nl', /^(\n)/],
+      ['ws', /^(\s+)/],
+      ['number', /^(-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?)/],
+      ['keyword', /^(var)/],
+      ['identifier', /^([a-zA-Z_][a-zA-Z_0-9]*)/]
+    ]);
 
-  var tokenizer = getTokenizer(terminals, function(type, opts) {
-    return new Token(opts);
-  });
+  var tokenizer = getTokenizer(terminals);
 
   var input = getInputStream();
 
@@ -49,7 +48,7 @@ function getInputStream() {
 }
 
 /**
- * @return {Stream.Transform}
+ * @return {Tokenizer}
  */
 function getTokenizer(terminals, tokenFactory) {
   var tokenizer = new Tokenizer(terminals, tokenFactory);
