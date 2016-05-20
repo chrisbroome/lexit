@@ -1,35 +1,39 @@
-var
-  fs = require('fs'),
-  stream = require('stream'),
-  lexit = require('../'),
-  TerminalList = lexit.TerminalList,
-  Tokenizer = lexit.Tokenizer,
-  Token = lexit.Token;
+const fs = require('fs');
+const stream = require('stream');
+
+const createAssign = require('../lib/util/create-assign');
+
+const lexit = require('../');
+const {TerminalList, Tokenizer, Terminal} = lexit;
 
 (function main() {
-  var
-    terminals = new TerminalList([
-      ['+', /^(\+)/],
-      ['-', /^(\-)/],
-      ['*', /^(\*)/],
-      ['/', /^(\/)/],
-      ['(', /^(\()/],
-      [')', /^(\))/],
-      ['^', /^(\^)/],
-      ['=', /^(=)/],
-      [';', /^(;)/],
-      ['nl', /^(\n)/],
-      ['ws', /^(\s+)/],
-      ['number', /^(-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?)/],
-      ['keyword', /^(var)/],
-      ['identifier', /^([a-zA-Z_][a-zA-Z_0-9]*)/],
-      ['string', /^("")/],
-      ['string', /^("(((?:\\(?:["\\/bfnrt]|u[0-9a-fA-F]{4}))|[^"\\])+)")/]
-    ]),
-    whitespaceFilter = getWhitespaceFilter(),
-    tokenizer = getTokenizer(terminals),
-    input = getInputStream(),
-    outputTransform = getOutputTransformStream();
+  const terminalArray = [
+    ['+', /^(\+)/],
+    ['-', /^(\-)/],
+    ['*', /^(\*)/],
+    ['/', /^(\/)/],
+    ['(', /^(\()/],
+    [')', /^(\))/],
+    ['^', /^(\^)/],
+    ['=', /^(=)/],
+    [';', /^(;)/],
+    ['nl', /^(\n)/],
+    ['ws', /^(\s+)/],
+    ['number', /^(-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?)/],
+    ['keyword', /^(var)/],
+    ['identifier', /^([a-zA-Z_][a-zA-Z_0-9]*)/],
+    ['string', /^("")/],
+    ['string', /^("(((?:\\(?:["\\/bfnrt]|u[0-9a-fA-F]{4}))|[^"\\])+)")/]
+  ].map(item => {
+    const [type, expression] = item;
+    return createAssign(Terminal, {type, expression});
+  });
+
+  const terminals = createAssign(TerminalList, {items: terminalArray});
+  const whitespaceFilter = getWhitespaceFilter();
+  const tokenizer = getTokenizer(terminals);
+  const input = getInputStream();
+  const outputTransform = getOutputTransformStream();
 
   return input.pipe(tokenizer)
     .pipe(whitespaceFilter)
