@@ -3,7 +3,7 @@ const stream = require('stream');
 
 const createAssign = require('../lib/util/create-assign');
 
-const lexit = require('../');
+const lexit = require('../index');
 const {TerminalList, Tokenizer, Terminal} = lexit;
 
 (function main() {
@@ -43,7 +43,7 @@ const {TerminalList, Tokenizer, Terminal} = lexit;
 }());
 
 function getWhitespaceFilter() {
-  var filter = stream.Transform({objectMode: true});
+  const filter = new stream.Transform({objectMode: true});
   filter._transform = function(token, encoding, cb) {
     if (token.type === 'nl' || token.type === 'ws') return cb();
     this.push(token);
@@ -57,7 +57,7 @@ function getWhitespaceFilter() {
 }
 
 function getOutputTransformStream() {
-  var outputTransform = new stream.Transform({writableObjectMode: true});
+  const outputTransform = new stream.Transform({writableObjectMode: true});
   outputTransform._transform = function(token, encoding, cb) {
     this.push(token.toString() + '\n');
     cb();
@@ -72,9 +72,8 @@ function getOutputTransformStream() {
  * @return {Stream.Readable}
  */
 function getInputStream() {
-  var
-    filename = process.argv[2],
-    inputStream = filename ? fs.createReadStream(filename) : process.stdin;
+  const filename = process.argv[2];
+  const inputStream = filename ? fs.createReadStream(filename) : process.stdin;
 
   inputStream.on('error', function(err) {
     console.error('inputStream:error:', err);
@@ -87,7 +86,7 @@ function getInputStream() {
  * @return {Tokenizer}
  */
 function getTokenizer(terminals, tokenFactory) {
-  var tokenizer = new Tokenizer(terminals, tokenFactory);
+  const tokenizer = new Tokenizer(terminals, tokenFactory);
 
   tokenizer.on('error', function(err) {
     console.error('tokenizer:error:', err);
