@@ -1,10 +1,8 @@
 const fs = require('fs');
 const stream = require('stream');
 
-const createAssign = require('../lib/util/create-assign');
-
-const Terminal = require('../lib/terminal');
-const TerminalList = require('../lib/terminal-list');
+const createTerminal = require('../lib/terminal');
+const createTerminalList = require('../lib/terminal-list');
 const createTokenizer = require('../lib/tokenizer');
 
 (function main() {
@@ -27,10 +25,10 @@ const createTokenizer = require('../lib/tokenizer');
     ['string', /^("(((?:\\(?:["\\/bfnrt]|u[0-9a-fA-F]{4}))|[^"\\])+)")/]
   ].map(item => {
     const [type, expression] = item;
-    return createAssign(Terminal, {type, expression});
+    return createTerminal({type, expression});
   });
 
-  const terminals = createAssign(TerminalList, {items: terminalArray});
+  const terminals = createTerminalList({items: terminalArray});
   const whitespaceFilter = getWhitespaceFilter();
   const tokenizer = getTokenizer(terminals);
   const input = getInputStream();

@@ -1,7 +1,7 @@
-exports.FileInfo = require('./lib/file-info');
-exports.Token = require('./lib/token');
-exports.Tokenizer = require('./lib/tokenizer');
-exports.Terminal = require('./lib/terminal');
-exports.TerminalList = require('./lib/terminal-list');
-exports.TerminalMatch = require('./lib/terminal-match');
-exports.TerminalMatchList = require('./lib/terminal-match-list');
+exports.createFileInfo = require('./lib/file-info');
+exports.createToken = require('./lib/token');
+exports.createTokenizer = require('./lib/tokenizer');
+exports.createTerminal = require('./lib/terminal');
+exports.createTerminalList = require('./lib/terminal-list');
+exports.createTerminalMatch = require('./lib/terminal-match');
+exports.createTerminalMatchList = require('./lib/terminal-match-list');
