@@ -3,8 +3,9 @@ const stream = require('stream');
 
 const createAssign = require('../lib/util/create-assign');
 
-const lexit = require('../index');
-const {TerminalList, Tokenizer, Terminal} = lexit;
+const Terminal = require('../lib/terminal');
+const TerminalList = require('../lib/terminal-list');
+const createTokenizer = require('../lib/tokenizer');
 
 (function main() {
   const terminalArray = [
@@ -86,7 +87,7 @@ function getInputStream() {
  * @return {Tokenizer}
  */
 function getTokenizer(terminals, tokenFactory) {
-  const tokenizer = new Tokenizer(terminals, tokenFactory);
+  const tokenizer = createTokenizer(terminals, tokenFactory);
 
   tokenizer.on('error', function(err) {
     console.error('tokenizer:error:', err);
