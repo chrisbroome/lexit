@@ -1,5 +1,8 @@
-var d = sqrt(b*b - 4*a*c);
-var twoA = 2 * a;
+function sqrt(a) {
+  return Math.sqrt(a);
+}
+const d = sqrt(b*b - 4*a*c);
+let twoA = 2 * a;
 var x1 = (-b + d) / twoA;
 var x2 = (-b - d) / twoA;
 var variableWithEmbeddedKeyword = 0;
