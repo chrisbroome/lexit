@@ -4,7 +4,8 @@
   "description": "A Streaming Lexer (Tokenizer)",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/index.js ./test/fixtures/sample.txt"
+    "test": "node ./test/index.js ./test/fixtures/sample.txt",
+    "test:js": "node ./test/index.js ./test/index.js"
   },
   "repository": {
     "type": "git",
