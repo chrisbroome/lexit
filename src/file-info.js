@@ -1,4 +1,4 @@
-const createAssign = require('./util/create-assign');
+import createAssign from './util/create-assign'
 
 const FileInfo = {
 
@@ -12,20 +12,20 @@ const FileInfo = {
    * @returns {FileInfo}
    */
   seek(length, seekInfo) {
-    const {position, line, column} = this;
-    const newPosition = position + length;
+    const {position, line, column} = this
+    const newPosition = position + length
 
     return seekInfo.newLines > 0 ?
       createFileInfo(newPosition, line + seekInfo.newLines, seekInfo.newColumnPos) :
-      createFileInfo(newPosition, line, column + length);
+      createFileInfo(newPosition, line, column + length)
   },
 
   toString() {
-    const {line, column} = this;
-    return `${line}:${column}`;
+    const {line, column} = this
+    return `${line}:${column}`
   }
 
-};
+}
 
 /**
  * @param {number} position
@@ -33,8 +33,6 @@ const FileInfo = {
  * @param {number} column
  * @returns {FileInfo}
  */
-function createFileInfo(position = 0, line = 1, column = 1) {
-  return createAssign(FileInfo, {position, line, column});
-}
+const createFileInfo = (position = 0, line = 1, column = 1) => createAssign(FileInfo, {position, line, column})
 
-module.exports = createFileInfo;
+export default createFileInfo
