@@ -52,7 +52,7 @@ import createTokenizer from '../src/tokenizer'
     ['string-literal', /^("")/],
     ['string-literal', /^("(((?:\\(?:["\\/bfnrt]|u[0-9a-fA-F]{4}))|[^"\\])+)")/],
     ['regexp-literal', /^(\/(.*)\/)/],
-    ['keyword', /^(var|function|return|const|let|new|delete)/],
+    ['keyword', /^(var|function|return|const|let|new|delete|try|catch|finally|switch|case|default|import|export)/],
     ['identifier', /^([a-zA-Z_][a-zA-Z_0-9]*)/]
   ].map(item => {
     const [type, expression] = item
