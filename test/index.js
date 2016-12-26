@@ -54,10 +54,7 @@ import createTokenizer from '../src/tokenizer'
     ['regexp-literal', /^(\/(.*)\/)/],
     ['keyword', /^(var|function|return|const|let|new|delete|try|catch|finally|switch|case|default|import|export)/],
     ['identifier', /^([a-zA-Z_][a-zA-Z_0-9]*)/]
-  ].map(item => {
-    const [type, expression] = item
-    return createTerminal({type, expression})
-  })
+  ].map(([type, expression]) => createTerminal({type, expression}))
 
   const terminals = createTerminalList({items: terminalArray})
   const whitespaceFilter = getWhitespaceFilter()
